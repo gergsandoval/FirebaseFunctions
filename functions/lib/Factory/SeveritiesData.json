@@ -1,0 +1,47 @@
+[
+    {
+        "name": "temperatura",
+        "description": "Temperatura",
+        "levels": [
+            { "name": "yellow", "min": 35, "max": 40 },
+            { "name": "orange", "min": 40, "max": 45 },
+            { "name": "red", "min": 45, "max": 50 }
+        ]
+    },
+    {
+        "name": "humedad",
+        "description": "Humedad",
+        "levels": [
+            { "name": "yellow", "min": 60, "max": 70 },
+            { "name": "orange", "min": 70, "max": 80 },
+            { "name": "red", "min": 80, "max": 90 }
+        ]
+    },
+    {
+        "name": "CO",
+        "description": "Monoxido de carbono",
+        "levels": [
+            { "name": "yellow", "min": 70, "max": 110 },
+            { "name": "orange", "min": 110, "max": 150 },
+            { "name": "red", "min": 150, "max": 2000 }
+        ]
+    },
+    {
+        "name": "LPG",
+        "description": "Gas licuado de petroleo",
+        "levels": [
+            { "name": "yellow", "min": 500, "max": 750 },
+            { "name": "orange", "min": 750, "max": 1000 },
+            { "name": "red", "min": 1000, "max": 10000 }
+        ]
+    },
+    {
+        "name": "CH4",
+        "description": "Metano",
+        "levels": [
+            { "name": "yellow", "min": 500, "max": 750 },
+            { "name": "orange", "min": 750, "max": 1000 },
+            { "name": "red", "min": 1000, "max": 10000 }
+        ]
+    }
+]
