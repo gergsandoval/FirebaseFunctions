@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleResolution": "Node",
+    "lib": ["ES5", "ES6", "DOM", "DOM.Iterable"],
   },
   "compileOnSave": true,
   "include": [
