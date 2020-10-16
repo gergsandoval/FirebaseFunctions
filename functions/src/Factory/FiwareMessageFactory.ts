@@ -1,5 +1,6 @@
 import FiwareMessage from "../Message/FiwareMessage";
 import IHash from "./IHash";
+import * as functions from "firebase-functions";
 
 export default class FiwareMessageFactory {
 
@@ -13,7 +14,9 @@ export default class FiwareMessageFactory {
 
     public newMessage(params: IHash): FiwareMessage {
         const keys = Object.keys(params);
-        const types = ["topic, token, condition"];
+        functions.logger.log(`keys: ${JSON.stringify(keys)}`);
+        const types = ["topic", "token", "condition"];
+        functions.logger.log(`types: ${JSON.stringify(types)}`);
         if (!keys.includes("notification")) throw new Error("Message.notification");
         if (types.filter(type => keys.includes(type)).length !== 1) throw new Error("Message.type");
         return this.createMessage(params);

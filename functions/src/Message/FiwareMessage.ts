@@ -10,7 +10,7 @@ export default class FiwareMessage {
         if (topic) this.message = {notification: notification, topic: topic};
         else if (token) this.message = {notification: notification, token: token};
         else if (condition) this.message = {notification: notification, condition: condition};
-        throw new Error("An error ocurred while creating the Fiware Message")
+        else throw new Error("An error ocurred while creating the Fiware Message")
     }
 
     public async sendToApp(): Promise<void> {
