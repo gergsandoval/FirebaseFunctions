@@ -4,6 +4,16 @@ import * as functions from "firebase-functions";
 
 export default class FiwareMessageFactory {
 
+    private static instance: FiwareMessageFactory;
+    private constructor() {}
+
+    public static getInstance(): FiwareMessageFactory {
+        if (!FiwareMessageFactory.instance){
+            FiwareMessageFactory.instance = new FiwareMessageFactory()
+        }
+        return FiwareMessageFactory.instance;
+    }
+
     private createMessage(params: IHash): FiwareMessage {
         let message: FiwareMessage;
         if (params["topic"]) message = new FiwareMessage(params["notification"], params["topic"])

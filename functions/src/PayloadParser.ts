@@ -5,27 +5,33 @@ import * as functions from "firebase-functions";
 
 export default class PayloadParser {
 
-    public static async parsePayload(payload: IHash): Promise<IHash> {
+    public static async parsePayload(payload: IHash): Promise<IHash> { 
         let hash: IHash = {};
         hash = PayloadParser.isPayloadValid(payload);
+        functions.logger.log(`isPayloadValid: ${JSON.stringify(hash)}`);
         hash = PayloadParser.addProperty(hash);
+        functions.logger.log(`addProperty: ${JSON.stringify(hash)}`);
         hash = PayloadParser.addValue(hash);
+        functions.logger.log(`addValue: ${JSON.stringify(hash)}`);
         hash = await PayloadParser.addDatabaseProperties(hash);
+        functions.logger.log(`addDatabaseProperties: ${JSON.stringify(hash)}`);
         hash = PayloadParser.addMessageRef(hash);
+        functions.logger.log(`addMessageRef: ${JSON.stringify(hash)}`);
         hash = PayloadParser.sanitizePayload(hash, ["id", hash["property"]]);
         functions.logger.log(`parsePayload.return: ${JSON.stringify(hash)}`);
         return hash;
     }
 
     private static isPayloadValid(payload: IHash): IHash {
+        functions.logger.log(`fiwareData: ${JSON.stringify(payload.body)}`);
         if (!payload["body"]) throw new Error("Payload is empty");
         if (!Array.isArray(payload["body"]["data"])) throw new Error("Payload has incorrect format");
         return payload["body"]["data"][0];
     }
 
     private static addProperty(hash: IHash): IHash {
+        if (!hash["controlledProperty"]) throw new Error("controlledProperty should be present in the Fiware Payload");
         const properties = Object.values(<string []>hash["controlledProperty"]);
-        if (!Array.isArray(properties)) throw new Error ("controlledProperty should be an Array");
         const keys = Object.keys(hash);
         const interseccion = properties.filter(property => keys.includes(property));
         if (interseccion.length !== 1) throw new Error("There's not match between controlledProperty and the property itself in the Fiware Payload");
@@ -57,12 +63,8 @@ export default class PayloadParser {
     private static async addDatabaseProperties(hash: IHash): Promise<IHash> {
         const sensorRepository: SensorRepository = SensorRepository.getInstance();
         let doc: IHash;
-        if (hash["modelName"])
+        if (!hash["modelName"])  throw new Error("modelName should be present in the Fiware Payload");
         doc = await sensorRepository.getSensorByModelName(hash["modelName"]);
-        else if (hash["controlledProperty"])
-        doc = await sensorRepository.getSensorByControlledProperty(hash["controlledProperty"]);
-        else
-        throw new Error("modelName or controlledProperty should be present in the Fiware Payload");
         for (const [key, value] of Object.entries(doc[hash["property"]])){
             hash[key] = value;
         }
