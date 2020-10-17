@@ -14,7 +14,7 @@ export default class MessageParser {
     
     private static async getNotificationsByMessageRef(messageRef: string): Promise<IHash[]> {
         const doc = await admin.firestore().doc(messageRef).get();
-        functions.logger.log(`getNotificationsTemplate.doc ${JSON.stringify(doc)}`);
+        if (!doc.exists) throw new Error("No matches in Firebase Messages Collection")
         return doc.data()?.notifications as IHash [];
     }
 

@@ -16,7 +16,7 @@ export default class SensorRepository {
     public async getSensorByModelName(modelName: string): Promise<IHash> {
         const querySnapshot = await admin.firestore().collection("Sensors")
                                          .where("modelName", "==", modelName).limit(1).get();
-        if (!querySnapshot.docs[0]) throw new Error("Didn't found any matches in Firebase Sensors Collection");
+        if (!querySnapshot.docs[0]) throw new Error("No matches in Firebase Sensors Collection");
         return querySnapshot.docs[0].data() as IHash;
     }
 }
