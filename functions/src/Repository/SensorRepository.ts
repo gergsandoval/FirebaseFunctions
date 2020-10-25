@@ -1,4 +1,4 @@
-import IHash from "./Factory/IHash";
+import IHash from "../Factory/IHash";
 import * as admin from "firebase-admin";
 
 export default class SensorRepository {

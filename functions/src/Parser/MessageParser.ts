@@ -1,6 +1,6 @@
-import * as admin from "firebase-admin";
-import IHash from "./Factory/IHash";
+import IHash from "../Factory/IHash";
 import * as functions from "firebase-functions";
+import MessageRepository from "../Repository/MessageRepository";
 
 export default class MessageParser {
 
@@ -8,14 +8,9 @@ export default class MessageParser {
     private static tokenRegExp: RegExp = /#\{{1}\w+\}#{1}/gi;
 
     public static async getNotifications(hash: IHash): Promise<IHash[]> {
-        const notificationsTemplate = await MessageParser.getNotificationsByMessageRef(hash["messageRef"]);
+        const messageRepository = MessageRepository.getInstance();
+        const notificationsTemplate = await messageRepository.getNotificationsByMessageRef(hash["messageRef"]);
         return MessageParser.replaceTokens(notificationsTemplate, hash);
-    }
-    
-    private static async getNotificationsByMessageRef(messageRef: string): Promise<IHash[]> {
-        const doc = await admin.firestore().doc(messageRef).get();
-        if (!doc.exists) throw new Error("No matches in Firebase Messages Collection")
-        return doc.data()?.notifications as IHash [];
     }
 
     private static replaceTokens(notifications: IHash[], hash: IHash): IHash [] {

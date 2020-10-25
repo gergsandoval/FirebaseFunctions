@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
 import express, { Application, Request, Response } from "express";
 import * as admin from "firebase-admin";
-import PayloadParser from "./PayloadParser";
-import MessageParser from "./MessageParser";
+import PayloadParser from "./Parser/PayloadParser";
+import MessageParser from "./Parser/MessageParser";
 import NotificationFactory from "./Factory/NotificationFactory";
 import FiwareMessage from "./Message/FiwareMessage";
 import FiwareMessageFactory from "./Factory/FiwareMessageFactory";

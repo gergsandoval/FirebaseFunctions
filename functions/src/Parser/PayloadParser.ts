@@ -1,7 +1,8 @@
 
-import IHash from "./Factory/IHash";
-import SensorRepository from "./SensorRepository";
+import IHash from "../Factory/IHash";
+import SensorRepository from "../Repository/SensorRepository";
 import * as functions from "firebase-functions";
+import FiwareError from "../Error/FiwareError";
 
 export default class PayloadParser {
 
@@ -25,7 +26,7 @@ export default class PayloadParser {
     private static isPayloadValid(payload: IHash): IHash {
         functions.logger.log(`fiwareData: ${JSON.stringify(payload.body)}`);
         if (!payload["body"]) throw new Error("Payload is empty");
-        if (!Array.isArray(payload["body"]["data"])) throw new Error("Payload has incorrect format");
+        if (!Array.isArray(payload["body"]["data"])) throw new FiwareError(400, "Payload has incorrect format", PayloadParser.name, PayloadParser.isPayloadValid.name);
         return payload["body"]["data"][0];
     }
 
