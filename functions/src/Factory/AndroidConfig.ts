@@ -5,7 +5,7 @@ export default class AndroidConfig {
     ttl: number;
     notification: IHash  
     
-    public constructor(color: any) {
+    public constructor(color: string) {
         this.ttl = 0;
         this.notification = {color: this.convertColorStringToHex(color)}
     }
