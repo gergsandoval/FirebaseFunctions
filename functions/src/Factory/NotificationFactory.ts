@@ -20,13 +20,14 @@ export default class NotificationFactory {
         if (params["imageUrl"]) notification.setImageUrl(params["imageUrl"]);
         messageParams["notification"] = notification;
         messageParams["topic"] = params["topic"];
+        messageParams["color"] = params["color"];
         return messageParams;
     }
 
     public newNotification(params : IHash): IHash {
         const keys = Object.keys(params);
-        if (!keys.includes("title")) throw new FiwareError(500, 'There no title in the Notification parameters', NotificationFactory.name, "newNotification");
-        else if (!keys.includes("body")) throw new FiwareError(500, 'There no body in the Notification parameters', NotificationFactory.name, "newNotification");
+        if (!keys.includes("title")) throw new FiwareError(500, "There's no title in the Notification parameters", NotificationFactory.name, "newNotification");
+        else if (!keys.includes("body")) throw new FiwareError(500, "There's no body in the Notification parameters", NotificationFactory.name, "newNotification");
         return this.createNotification(params);
     }
 }

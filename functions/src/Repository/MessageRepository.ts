@@ -14,9 +14,13 @@ export default class MessageRepository {
         return MessageRepository.instance;
     }
     
-    public async getNotificationsByMessageRef(messageRef: string): Promise<IHash[]> {
+    public async getNotificationsByMessageRef(messageRef: string): Promise<IHash []> {
         const doc = await admin.firestore().doc(messageRef).get();
         if (!doc.exists) throw new FiwareError(404, "No matches in Firebase Messages Collection", MessageRepository.name, "getNotificationsByMessageRef");
-        return doc.data()?.notifications as IHash [];
+        const docData = doc.data() as IHash;
+        for (const notification of docData["notifications"]){
+            notification["color"] = docData["color"];
+        }
+        return docData["notifications"];
     }
 }

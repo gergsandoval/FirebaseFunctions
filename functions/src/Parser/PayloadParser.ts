@@ -40,7 +40,7 @@ export default class PayloadParser {
         return hash;
     }
 
-    private static addValue(hash: IHash) : IHash { 
+    private static addValue(hash: IHash) : IHash {
         hash["value"] = hash[hash["property"]];
         return hash;
     }

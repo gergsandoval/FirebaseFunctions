@@ -10,8 +10,8 @@ export default class MessageParser {
 
     public static async getNotifications(hash: IHash): Promise<IHash[]> {
         const messageRepository = MessageRepository.getInstance();
-        const notificationsTemplate = await messageRepository.getNotificationsByMessageRef(hash["messageRef"]);
-        return MessageParser.replaceTokens(notificationsTemplate, hash);
+        const notifications = await messageRepository.getNotificationsByMessageRef(hash["messageRef"]);
+        return MessageParser.replaceTokens(notifications, hash);
     }
 
     private static replaceTokens(notifications: IHash[], hash: IHash): IHash [] {

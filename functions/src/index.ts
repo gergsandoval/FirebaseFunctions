@@ -27,6 +27,7 @@ app.post("/", async (req: Request, res: Response) => {
         });
         res.json(messages);
     } catch (error) {
+        error.statusCode = error.statusCode || 500;
         res.status(error.statusCode).send(error);
     }
 })

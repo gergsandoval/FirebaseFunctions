@@ -2,6 +2,7 @@ import FiwareMessage from "../Message/FiwareMessage";
 import IHash from "./IHash";
 import * as functions from "firebase-functions";
 import FiwareError from "../Error/FiwareError";
+import AndroidConfig from "./AndroidConfig";
 
 export default class FiwareMessageFactory {
 
@@ -17,9 +18,9 @@ export default class FiwareMessageFactory {
 
     private createMessage(params: IHash): FiwareMessage {
         let message: FiwareMessage;
-        if (params["topic"]) message = new FiwareMessage(params["notification"], params["topic"])
-        else if (params["token"]) message =  new FiwareMessage(params["notification"], undefined, params["token"]);
-        else message = new FiwareMessage(params["notification"], undefined, undefined, params["condition"]);
+        if (params["topic"]) message = new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), params["topic"])
+        else if (params["token"]) message =  new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), undefined, params["token"]);
+        else message = new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), undefined, undefined, params["condition"]);
         return message;
     }
 
