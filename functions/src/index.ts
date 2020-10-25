@@ -26,8 +26,8 @@ app.post("/", async (req: Request, res: Response) => {
             await fiwareMessage.sendToApp();
         });
         res.json(messages);
-    } catch (err) {
-        res.status(500).send({statusCode: 500, message: err.message});
+    } catch (error) {
+        res.status(error.statusCode).send(error);
     }
 })
 

@@ -1,5 +1,6 @@
 import IHash from "../Factory/IHash";
 import * as admin from "firebase-admin";
+import FiwareError from "../Error/FiwareError";
 
 export default class MessageRepository {
 
@@ -15,7 +16,7 @@ export default class MessageRepository {
     
     public async getNotificationsByMessageRef(messageRef: string): Promise<IHash[]> {
         const doc = await admin.firestore().doc(messageRef).get();
-        if (!doc.exists) throw new Error("No matches in Firebase Messages Collection")
+        if (!doc.exists) throw new FiwareError(404, "No matches in Firebase Messages Collection", MessageRepository.name, "getNotificationsByMessageRef");
         return doc.data()?.notifications as IHash [];
     }
 }

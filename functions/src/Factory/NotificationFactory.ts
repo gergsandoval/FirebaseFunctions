@@ -1,5 +1,6 @@
 import IHash from "./IHash";
 import Notification from "../Message/Notification";
+import FiwareError from "../Error/FiwareError";
 
 export default class NotificationFactory { 
     
@@ -24,8 +25,8 @@ export default class NotificationFactory {
 
     public newNotification(params : IHash): IHash {
         const keys = Object.keys(params);
-        if (!keys.includes("title")) throw new Error("Notification.title");
-        else if (!keys.includes("body")) throw new Error("Notification.body");
+        if (!keys.includes("title")) throw new FiwareError(500, 'There no title in the Notification parameters', NotificationFactory.name, "newNotification");
+        else if (!keys.includes("body")) throw new FiwareError(500, 'There no body in the Notification parameters', NotificationFactory.name, "newNotification");
         return this.createNotification(params);
     }
 }

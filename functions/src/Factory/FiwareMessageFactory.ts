@@ -1,6 +1,7 @@
 import FiwareMessage from "../Message/FiwareMessage";
 import IHash from "./IHash";
 import * as functions from "firebase-functions";
+import FiwareError from "../Error/FiwareError";
 
 export default class FiwareMessageFactory {
 
@@ -27,8 +28,8 @@ export default class FiwareMessageFactory {
         functions.logger.log(`keys: ${JSON.stringify(keys)}`);
         const types = ["topic", "token", "condition"];
         functions.logger.log(`types: ${JSON.stringify(types)}`);
-        if (!keys.includes("notification")) throw new Error("Message.notification");
-        if (types.filter(type => keys.includes(type)).length !== 1) throw new Error("Message.type");
+        if (!keys.includes("notification")) throw new FiwareError(500, "There's no notification in the Message parameters", FiwareMessageFactory.name, "newMessage");
+        if (types.filter(type => keys.includes(type)).length !== 1) throw new FiwareError(500, "There's more than one MessageType (Token, Topic, Condition) in the Message parameters", FiwareMessageFactory.name, "newMessage");
         return this.createMessage(params);
     }
 }

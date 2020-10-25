@@ -1,6 +1,7 @@
 import IHash from "../Factory/IHash";
 import * as functions from "firebase-functions";
 import MessageRepository from "../Repository/MessageRepository";
+import FiwareError from "../Error/FiwareError";
 
 export default class MessageParser {
 
@@ -39,7 +40,7 @@ export default class MessageParser {
         functions.logger.log(`hashKeys: ${JSON.stringify(hashKeys)}`);
         if (notificationKeys) {
             if(!notificationKeys.every(notificationKey => hashKeys.includes(notificationKey)))
-                throw new Error("There's no enough keys in the payload to replace the notification template");
+                throw new FiwareError(400, "There's no enough keys in the payload to replace the notification template", MessageParser.name, MessageParser.getKeys.name);
         }
         return notificationKeys;
     }
