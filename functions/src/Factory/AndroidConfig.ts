@@ -7,10 +7,10 @@ export default class AndroidConfig {
     
     public constructor(color: string) {
         this.ttl = 0;
-        this.notification = {color: this.convertColorStringToHex(color)}
+        this.notification = {color: this.colorStringToHex(color)}
     }
 
-    private convertColorStringToHex(color: string) {
+    private colorStringToHex(color: string) {
         const hexColor = colorString.get.rgb(color);
         return colorString.to.hex(<number[]>hexColor);
     }

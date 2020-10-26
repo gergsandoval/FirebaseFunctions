@@ -3,6 +3,7 @@ import { ConditionMessage, TopicMessage, TokenMessage } from "firebase-admin/lib
 import Notification from "./Notification";
 import * as functions from "firebase-functions";
 import FiwareError from "../Error/FiwareError";
+import HistoricRepository from "../Repository/HistoryRepository";
 
 export default class FiwareMessage {
     private message: ConditionMessage | TopicMessage | TokenMessage
@@ -17,6 +18,7 @@ export default class FiwareMessage {
     public async sendToApp(): Promise<void> {
         const messageId = await admin.messaging().send(this.message);
         if (!messageId) throw new FiwareError(500, "An error ocurred while sending Fiware Message via Firebase FCM", FiwareMessage.name, "sendToApp");
-        functions.logger.log(messageId);
+        const historyRepository = HistoricRepository.getInstance();
+        await historyRepository.saveNotification(this.message);
     }
 }
