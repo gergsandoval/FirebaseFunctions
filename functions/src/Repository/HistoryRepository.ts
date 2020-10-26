@@ -15,7 +15,7 @@ export default class HistoricRepository {
     public async saveNotification(message: any) {
         const query = await admin.firestore().collection("History").where("topic", "==", message.topic).limit(1).get();
         for (const doc of query.docs) {
-            await admin.firestore().doc(doc.id).update
+            await admin.firestore().collection("History").doc(doc.id).update
             ({notifications: admin.firestore.FieldValue.arrayUnion({title: message.notification.title, body: message.notification.body, date: admin.firestore.Timestamp.fromDate(new Date())})})
         }
     }

@@ -1,7 +1,6 @@
 import * as admin from "firebase-admin";
 import { ConditionMessage, TopicMessage, TokenMessage } from "firebase-admin/lib/messaging";
 import Notification from "./Notification";
-import * as functions from "firebase-functions";
 import FiwareError from "../Error/FiwareError";
 import HistoricRepository from "../Repository/HistoryRepository";
 
