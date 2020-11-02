@@ -22,8 +22,9 @@ export default class HistoryRepository {
 
     private updateNotifications(notifications: IHash, message: any): IHash {
         const notification = {title: message.notification.title, body: message.notification.body, date: admin.firestore.Timestamp.fromDate(new Date())}
-        Object.values(notifications).unshift(notification);
-        return notifications;
+        const updatedNotifications = Object.values(notifications)
+        updatedNotifications.unshift(notification);
+        return updatedNotifications;
     }
 
     public async saveNotification(message: any) {
