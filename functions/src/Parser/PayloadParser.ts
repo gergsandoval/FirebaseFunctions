@@ -54,7 +54,7 @@ export default class PayloadParser {
 
     private static addMessageRef(hash: IHash): IHash {
         const severity: IHash | undefined = Object.values(<IHash []>hash["levels"])
-                                                  .find(level => level["min"] <= hash["value"] && level["max"] >= hash["value"]); 
+                                                  .find(level => level["min"] <= hash["value"] && level["max"] > hash["value"]); 
         if (!severity) throw new FiwareError(404, `There's no mapped level of severity for property ${hash["property"]} and value ${hash["value"]} in Firebase Sensors Collection`, PayloadParser.name, PayloadParser.addMessageRef.name)
         hash["messageRef"] = severity["messageRef"];
         delete hash["levels"];
