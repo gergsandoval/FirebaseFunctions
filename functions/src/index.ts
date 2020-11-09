@@ -21,7 +21,7 @@ app.post("/", async (req: Request, res: Response) => {
         const {notificationFactory, fiwareMessageFactory} = initializeFactories();
         notifications.forEach(async notificationParams => {
             const messageParams = notificationFactory.newNotification(notificationParams);
-            const fiwareMessage = fiwareMessageFactory.newMessage(messageParams);
+            const fiwareMessage = fiwareMessageFactory.newMessage(notificationParams, messageParams);
             messages.push(fiwareMessage);
             await fiwareMessage.sendToApp();
         });
@@ -38,5 +38,14 @@ const initializeFactories = () => {
     return {notificationFactory, fiwareMessageFactory}
 }
 
-
 exports.notification = functions.https.onRequest(app);
+
+exports.insertUserData = functions.auth.user().onCreate(async user => {
+    const uid = user.uid
+    const topic: string | undefined = user.email?.substring(0, user.email?.indexOf("@"))
+    const doc = {notifications: [], topic: topic, topicDescription: ""}
+    await admin.firestore().collection("Users").doc(uid).set(doc, {merge: true});
+});
+
+
+

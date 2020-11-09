@@ -16,21 +16,21 @@ export default class FiwareMessageFactory {
         return FiwareMessageFactory.instance;
     }
 
-    private createMessage(params: IHash): FiwareMessage {
+    private createMessage(notificationsParams: IHash, messageParams: IHash): FiwareMessage {
         let message: FiwareMessage;
-        if (params["topic"]) message = new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), params["topic"])
-        else if (params["token"]) message =  new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), undefined, params["token"]);
-        else message = new FiwareMessage(params["notification"], new AndroidConfig(params["color"]), undefined, undefined, params["condition"]);
+        if (notificationsParams["topic"]) message = new FiwareMessage(messageParams["notification"], new AndroidConfig(notificationsParams["color"]), notificationsParams["topic"])
+        else if (notificationsParams["token"]) message =  new FiwareMessage(messageParams["notification"], new AndroidConfig(notificationsParams["color"]), undefined, notificationsParams["token"]);
+        else message = new FiwareMessage(messageParams["notification"], new AndroidConfig(messageParams["color"]), undefined, undefined, notificationsParams["condition"]);
         return message;
     }
 
-    public newMessage(params: IHash): FiwareMessage {
-        const keys = Object.keys(params);
+    public newMessage(notificationsParams: IHash, messageParams: IHash): FiwareMessage {
+        const keys = Object.keys(notificationsParams);
         functions.logger.log(`keys: ${JSON.stringify(keys)}`);
         const types = ["topic", "token", "condition"];
         functions.logger.log(`types: ${JSON.stringify(types)}`);
-        if (!keys.includes("notification")) throw new FiwareError(500, "There's no notification in the Message parameters", FiwareMessageFactory.name, "newMessage");
+        if (!messageParams["notification"]) throw new FiwareError(500, "There's no notification in the Message parameters", FiwareMessageFactory.name, "newMessage");
         if (types.filter(type => keys.includes(type)).length !== 1) throw new FiwareError(500, "There's more than one MessageType (Token, Topic, Condition) in the Message parameters", FiwareMessageFactory.name, "newMessage");
-        return this.createMessage(params);
+        return this.createMessage(notificationsParams, messageParams);
     }
 }

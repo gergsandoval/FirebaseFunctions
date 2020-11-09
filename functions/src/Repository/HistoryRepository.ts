@@ -14,7 +14,7 @@ export default class HistoryRepository {
     }
 
     private async getDocument(topic: string): Promise<IHash> { 
-        const query = await admin.firestore().collection("History").where("topic", "==", topic).limit(1).get();
+        const query = await admin.firestore().collection("Users").where("topic", "==", topic).limit(1).get();
         const doc = query.docs[0].data() as IHash;
         doc["id"] = query.docs[0].id;
         return doc;
@@ -30,7 +30,7 @@ export default class HistoryRepository {
     public async saveNotification(message: any) {
         const document = await this.getDocument(message.topic);
         const updatedNotifications = this.updateNotifications(document["notifications"], message);
-        await admin.firestore().collection("History").doc(document["id"]).update({notifications: updatedNotifications});
+        await admin.firestore().collection("Users").doc(document["id"]).set({notifications: updatedNotifications}, {merge: true});
     }
     
 

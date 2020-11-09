@@ -10,9 +10,22 @@ export default class MessageParser {
 
     public static async getNotifications(hash: IHash): Promise<IHash[]> {
         const messageRepository = MessageRepository.getInstance();
-        const notifications = await messageRepository.getNotificationsByMessageRef(hash["messageRef"]);
-        return MessageParser.replaceTokens(notifications, hash);
+        let notifications = await messageRepository.getNotificationsByMessageRef(hash["messageRef"]);
+        notifications = MessageParser.replaceTokens(notifications, hash);
+        return MessageParser.addTopic(hash, notifications);
     }
+
+    private static addTopic(hash: IHash, notifications: IHash []): IHash [] {
+        for (const notification of Object.values(notifications)){
+            const topic = notification["topic"] as String
+            const institucion = hash["institucion"] as String
+            if (topic.toLowerCase() !== "funcionario") {
+                notification["topic"] = `${institucion}${topic}`.toLowerCase();
+            }
+        }
+        functions.logger.log("addTopic: ", JSON.stringify(notifications));
+        return notifications
+    } 
 
     private static replaceTokens(notifications: IHash[], hash: IHash): IHash [] {
         for (const notification of Object.values(notifications)){

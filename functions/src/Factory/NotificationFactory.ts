@@ -19,8 +19,6 @@ export default class NotificationFactory {
         const notification = new Notification(params["title"], params["body"]);
         if (params["imageUrl"]) notification.setImageUrl(params["imageUrl"]);
         messageParams["notification"] = notification;
-        messageParams["topic"] = params["topic"];
-        messageParams["color"] = params["color"];
         return messageParams;
     }
 
