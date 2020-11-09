@@ -43,7 +43,7 @@ exports.notification = functions.https.onRequest(app);
 exports.insertUserData = functions.auth.user().onCreate(async user => {
     const uid = user.uid
     const topic: string | undefined = user.email?.substring(0, user.email?.indexOf("@"))
-    const doc = {notifications: [], topic: topic, topicDescription: ""}
+    const doc = {notifications: [], topic: topic?.toLowerCase(), topicDescription: ""}
     await admin.firestore().collection("Users").doc(uid).set(doc, {merge: true});
 });
 
