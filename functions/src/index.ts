@@ -47,5 +47,13 @@ exports.insertUserData = functions.auth.user().onCreate(async user => {
     await admin.firestore().collection("Users").doc(uid).set(doc, {merge: true});
 });
 
-
+exports.insertNewMessage = functions.https.onRequest(async (req: Request, res: Response) => {
+    try {
+        const messageId = req.query.messageId as string;
+        await admin.firestore().collection("Messages").doc(messageId).set(req.body, {merge: true});
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+    res.json(req.body);
+})
 
