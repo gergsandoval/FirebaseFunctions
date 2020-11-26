@@ -21,6 +21,8 @@ export default class MessageParser {
             const institucion = hash["institucion"] as String
             if (topic.toLowerCase() !== "funcionario") {
                 notification["topic"] = `${institucion}${topic}`.toLowerCase();
+            } else {
+                notification["topic"] = `${topic}${functions.config().notification.hotel}`.toLowerCase();
             }
         }
         functions.logger.log("addTopic: ", JSON.stringify(notifications));
